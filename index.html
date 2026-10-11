@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#0a0e14">
+<title>Mando — Taiwan Mandarin for International Students</title>
+<style>
+  :root {
+    --bg: #0a0e14;
+    --bg-elev: #141922;
+    --bg-card: #1a2029;
+    --bg-hover: #222a36;
+    --ink: #e8ecf0;
+    --ink-dim: #a0a9b5;
+    --ink-muted: #6b7483;
+    --border: #252d3a;
+    --border-lite: #2d3645;
+    --accent: #ff6b35;
+    --accent-soft: rgba(255,107,53,0.12);
+    --accent-glow: rgba(255,107,53,0.3);
+    --jade: #14b8a6;
+    --jade-soft: rgba(20,184,166,0.12);
+    --gold: #fbbf24;
+    --rose: #f43f5e;
+    --success: #22c55e;
+    --error: #ef4444;
+    --t1: #60a5fa;
+    --t2: #4ade80;
+    --t3: #fbbf24;
+    --t4: #f87171;
+    --t5: #94a3b8;
+  }
+  :root.light {
+    --bg: #faf7f2;
+    --bg-elev: #ffffff;
+    --bg-card: #ffffff;
+    --bg-hover: #f0ebe2;
+    --ink: #1a1612;
+    --ink-dim: #5a5248;
+    --ink-muted: #8a8275;
+    --border: #e8dcc8;
+    --border-lite: #ddd0b8;
+  }
+
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.5;
+    min-height: 100vh;
+    padding-bottom: 80px;
+    overflow-x: hidden;
+  }
+  .zh { font-family: 'PingFang TC', 'Microsoft JhengHei', 'Noto Sans TC', serif; }
+
+  /* ============ TOP BAR ============ */
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(10,14,20,0.85);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  :root.light .topbar { background: rgba(250,247,242,0.9); }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 800;
+    font-size: 1.1em;
+    letter-spacing: -0.02em;
+  }
+  .brand-logo {
+    width: 32px; height: 32px;
+    background: linear-gradient(135deg, var(--accent), #c73e1d);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 800;
+    font-size: 1.1em;
+    box-shadow: 0 2px 8px var(--accent-glow);
+  }
+  .brand small { color: var(--ink-muted); font-weight: 500; font-size: 0.7em; display: block; margin-top: -2px; }
+  .topbar-actions { margin-left: auto; display: flex; gap: 8px; align-items: center; }
+  .icon-btn {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    color: var(--ink-dim);
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1em;
+    transition: all 0.15s;
+  }
+  .icon-btn:hover { background: var(--bg-hover); color: var(--ink); }
+  .icon-btn:active { transform: scale(0.95); }
+
+  /* ============ BOTTOM NAV ============ */
+  .bottomnav {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: rgba(20,25,34,0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 100;
+    padding: 8px 4px calc(8px + env(safe-area-inset-bottom)) 4px;
+  }
+  :root.light .bottomnav { background: rgba(255,255,255,0.95); }
+  .bn-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--ink-muted);
+    padding: 8px 4px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.7em;
+    font-weight: 600;
+    border-radius: 10px;
+    transition: color 0.15s;
+    position: relative;
+  }
+  .bn-btn.active { color: var(--accent); }
+  .bn-btn .bn-icon {
+    font-size: 1.4em;
+    line-height: 1;
+    margin-bottom: 2px;
+  }
+  .bn-btn.active::before {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 24px; height: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+
+  /* ============ MAIN ============ */
+  main { max-width: 820px; margin: 0 auto; padding: 16px; }
+  section.view { display: none; animation: fadeIn 0.25s ease-out; }
+  section.view.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .view-title {
+    font-size: 1.5em;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin: 8px 0 4px;
+  }
+  .view-sub { color: var(--ink-muted); font-size: 0.9em; margin-bottom: 20px; }
+
+  /* ============ HOME ============ */
+  .hero {
+    background: linear-gradient(135deg, var(--accent) 0%, #c73e1d 100%);
+    border-radius: 20px;
+    padding: 24px 20px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 16px;
+    box-shadow: 0 10px 30px -10px var(--accent-glow);
+  }
+  .hero::before {
+    content: '🇹🇼';
+    position: absolute;
+    right: -10px; top: -10px;
+    font-size: 7em;
+    opacity: 0.15;
+    transform: rotate(-15deg);
+  }
+  .hero h2 { margin: 0 0 4px; font-size: 1.4em; font-weight: 800; letter-spacing: -0.02em; }
+  .hero p { margin: 0; opacity: 0.95; font-size: 0.95em; }
+
+  .daily-phrase {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin: 16px 0;
+    position: relative;
+  }
+  .daily-phrase .tag {
+    display: inline-block;
+    background: var(--jade-soft);
+    color: var(--jade);
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.72em;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .daily-phrase .zh-big {
+    font-size: 2em;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin: 6px 0;
+  }
+  .daily-phrase .pinyin-big {
+    color: var(--accent);
+    font-size: 1.1em;
+    font-weight: 600;
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+  .daily-phrase .en-big { color: var(--ink-dim); font-size: 1em; }
+  .daily-phrase .play-fab {
+    position: absolute;
+    top: 20px; right: 20px;
+    width: 44px; height: 44px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+    box-shadow: 0 4px 12px var(--accent-glow);
+    transition: transform 0.1s;
+  }
+  .daily-phrase .play-fab:active { transform: scale(0.9); }
+
+  .quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .quick-tile {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: left;
+    color: var(--ink);
+  }
+  .quick-tile:hover { transform: translateY(-2px); border-color: var(--accent); }
+  .quick-tile .q-icon { font-size: 1.8em; display: block; margin-bottom: 8px; }
+  .quick-tile .q-title { font-weight: 700; font-size: 0.95em; }
+  .quick-tile .q-sub { color: var(--ink-muted); font-size: 0.8em; margin-top: 2px; }
+
+  .section-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 24px 0 12px;
+  }
+  .section-head h3 {
+    margin: 0;
+    font-size: 1.1em;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .section-head .count {
+    background: var(--bg-elev);
+    color: var(--ink-muted);
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 0.72em;
+    font-weight: 700;
+  }
+  .section-head .see-all {
+    margin-left: auto;
+    color: var(--accent);
+    background: none;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 0.85em;
+  }
+
+  /* ============ CATEGORY SELECTOR ============ */
+  .cat-scroll {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 0 12px;
+    margin: 0 -16px 12px;
+    padding-left: 16px;
+    padding-right: 16px;
+    scrollbar-width: none;
+  }
+  .cat-scroll::-webkit-scrollbar { display: none; }
+  .cat-chip {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--ink-dim);
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 0.85em;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cat-chip:hover { background: var(--bg-hover); color: var(--ink); }
+  .cat-chip.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    box-shadow: 0 4px 12px var(--accent-glow);
+  }
+
+  /* ============ PHRASE CARD ============ */
+  .search {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .search input {
+    background: none;
+    border: none;
+    color: var(--ink);
+    flex: 1;
+    font-size: 1em;
+    outline: none;
+    font-family: inherit;
+  }
+  .search input::placeholder { color: var(--ink-muted); }
+
+  .phrases { display: flex; flex-direction: column; gap: 8px; }
+  .phrase {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 16px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: center;
+    transition: all 0.15s;
+    cursor: pointer;
+  }
+  .phrase:hover { border-color: var(--border-lite); background: var(--bg-hover); }
+  .phrase.playing { border-color: var(--accent); background: var(--accent-soft); }
+  .phrase-body { min-width: 0; }
+  .phrase-zh {
+    font-size: 1.35em;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    line-height: 1.3;
+  }
+  .phrase-pinyin {
+    color: var(--accent);
+    font-size: 0.95em;
+    font-style: italic;
+    font-weight: 600;
+    margin-top: 2px;
+  }
+  .phrase-en {
+    color: var(--ink-dim);
+    font-size: 0.9em;
+    margin-top: 2px;
+  }
+  .phrase-tag {
+    display: inline-block;
+    background: var(--jade-soft);
+    color: var(--jade);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 0.68em;
+    font-weight: 700;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+  .phrase-tag.hot { background: rgba(244,63,94,0.15); color: var(--rose); }
+  .phrase-play {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1em;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .phrase-play:hover { background: var(--accent); color: white; border-color: var(--accent); }
+  .phrase.playing .phrase-play { background: var(--accent); color: white; border-color: var(--accent); animation: pulse 1s infinite; }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 var(--accent-glow); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 10px transparent; }
+  }
+
+  /* ============ LESSON ACCORDION ============ */
+  .lesson {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .lesson-head {
+    padding: 16px 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    user-select: none;
+  }
+  .lesson-head:hover { background: var(--bg-hover); }
+  .lesson-num {
+    background: var(--accent);
+    color: white;
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800;
+    flex-shrink: 0;
+  }
+  .lesson-title { font-weight: 700; font-size: 1em; }
+  .lesson-sub { color: var(--ink-muted); font-size: 0.82em; margin-top: 2px; }
+  .lesson-chev { margin-left: auto; color: var(--ink-muted); transition: transform 0.2s; }
+  .lesson.open .lesson-chev { transform: rotate(180deg); }
+  .lesson-body { padding: 0 18px 18px; display: none; }
+  .lesson.open .lesson-body { display: block; }
+  .lesson-body h4 {
+    font-size: 0.85em;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 18px 0 8px;
+    font-weight: 700;
+  }
+  .lesson-body h4:first-child { margin-top: 8px; }
+
+  /* ============ TONE DEMO ============ */
+  .tone-wheel {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+    gap: 8px;
+    margin: 10px 0;
+  }
+  .tone-cell {
+    padding: 14px 8px;
+    border-radius: 12px;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    transition: transform 0.15s;
+    font-weight: 700;
+  }
+  .tone-cell:hover { transform: translateY(-2px); }
+  .tone-cell .big { font-size: 1.8em; margin: 4px 0; }
+  .tone-cell .small { font-size: 0.72em; opacity: 0.95; }
+  .tn1 { background: var(--t1); }
+  .tn2 { background: var(--t2); color: #0a0f1a; }
+  .tn3 { background: var(--t3); color: #0a0f1a; }
+  .tn4 { background: var(--t4); }
+  .tn5 { background: var(--t5); color: #0a0f1a; }
+
+  /* ============ PINYIN CHART ============ */
+  .pinyin-chart { overflow-x: auto; margin: 12px -16px; padding: 0 16px; }
+  .pinyin-chart table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 4px;
+    font-size: 0.88em;
+    min-width: 500px;
+  }
+  .pinyin-chart th {
+    background: var(--accent-soft);
+    color: var(--accent);
+    padding: 8px 6px;
+    border-radius: 6px;
+    font-weight: 700;
+    text-align: center;
+  }
+  .pinyin-chart td {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 8px 6px;
+    border-radius: 6px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .pinyin-chart td:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .pinyin-chart td.row-label {
+    background: var(--border);
+    color: var(--accent);
+    font-weight: 800;
+    cursor: default;
+  }
+  .pinyin-chart td.empty { background: transparent; border-color: transparent; cursor: default; color: var(--ink-muted); }
+  .pinyin-chart td[data-speak] {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    color: var(--ink-muted);
+    font-size: 0.78em;
+    font-weight: 500;
+  }
+  .pinyin-chart td[data-speak]::before {
+    content: attr(data-speak);
+    display: block;
+    font-family: 'PingFang TC','Microsoft JhengHei','Noto Sans TC',serif;
+    font-size: 1.35em;
+    font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 2px;
+    line-height: 1.1;
+  }
+  .pinyin-chart td[data-speak]:hover::before { color: var(--accent); }
+  /* bottom nav Chinese label */
+  .bn-btn .bn-cn {
+    font-size: 0.72em;
+    opacity: 0.75;
+    display: block;
+    margin-top: 1px;
+    font-family: 'PingFang TC','Microsoft JhengHei','Noto Sans TC',serif;
+  }
+  @media (min-width: 768px) {
+    .bn-btn .bn-cn { display: inline; margin-top: 0; margin-left: 4px; }
+  }
+
+  /* ============ TONGUE TWISTERS ============ */
+  .twister {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .twister::before {
+    content: '👅';
+    position: absolute;
+    top: 12px; right: 16px;
+    font-size: 2em;
+    opacity: 0.3;
+  }
+  .twister-level {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 10px;
+    font-size: 0.72em;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 10px;
+  }
+  .twister-level.easy { background: rgba(34,197,94,0.15); color: var(--success); }
+  .twister-level.med { background: rgba(251,191,36,0.15); color: var(--gold); }
+  .twister-level.hard { background: rgba(244,63,94,0.15); color: var(--rose); }
+  .twister-zh {
+    font-size: 1.3em;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1.6;
+    margin: 8px 0;
+  }
+  .twister-pinyin {
+    color: var(--accent);
+    font-style: italic;
+    font-size: 0.95em;
+    line-height: 1.6;
+    margin: 6px 0;
+  }
+  .twister-en {
+    color: var(--ink-dim);
+    font-size: 0.9em;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed var(--border);
+  }
+  .twister-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .mini-btn {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    padding: 6px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.82em;
+    font-weight: 600;
+  }
+  .mini-btn.primary { background: var(--accent); color: white; border-color: var(--accent); }
+  .mini-btn:hover { opacity: 0.9; }
+
+  /* ============ PRACTICE ============ */
+  .practice-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .score-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .score-pill {
+    background: var(--bg-elev);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 0.85em;
+    border: 1px solid var(--border);
+  }
+  .score-pill.c { color: var(--success); }
+  .score-pill.w { color: var(--error); }
+  .big-play-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    width: 96px; height: 96px;
+    border-radius: 50%;
+    font-size: 2em;
+    cursor: pointer;
+    margin: 10px auto;
+    box-shadow: 0 10px 30px var(--accent-glow);
+    transition: transform 0.1s;
+  }
+  .big-play-btn:active { transform: scale(0.92); }
+  .big-play-btn.playing { animation: pulse 0.9s infinite; }
+  .choices-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 20px 0 12px;
+  }
+  .choice-btn {
+    background: var(--bg-elev);
+    border: 2px solid var(--border);
+    color: var(--ink);
+    padding: 16px 10px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1.15em;
+    font-weight: 700;
+    transition: all 0.15s;
+    letter-spacing: 0.03em;
+  }
+  .choice-btn:hover { border-color: var(--accent); background: var(--accent-soft); }
+  .choice-btn.correct { background: rgba(34,197,94,0.15); border-color: var(--success); color: var(--success); }
+  .choice-btn.wrong { background: rgba(239,68,68,0.15); border-color: var(--error); color: var(--error); }
+  .choice-btn.disabled { pointer-events: none; opacity: 0.6; }
+  .feedback-msg {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 10px;
+    font-weight: 600;
+    min-height: 20px;
+    font-size: 0.9em;
+  }
+  .feedback-msg.c { background: rgba(34,197,94,0.1); color: var(--success); }
+  .feedback-msg.w { background: rgba(239,68,68,0.1); color: var(--error); }
+  .mode-row {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 14px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .mode-pill {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    color: var(--ink-dim);
+    padding: 6px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8em;
+    font-weight: 600;
+  }
+  .mode-pill.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+  /* ============ VOICE SELECTOR MODAL ============ */
+  .voice-bar {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    padding: 10px 14px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 0.85em;
+  }
+  .voice-bar select {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--ink);
+    padding: 6px 10px;
+    border-radius: 8px;
+    flex: 1;
+    min-width: 100px;
+    font-family: inherit;
+  }
+  .voice-bar label { color: var(--ink-muted); font-weight: 600; }
+
+  /* ============ UTILS ============ */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--ink-muted);
+  }
+  .empty-state .em-icon { font-size: 3em; margin-bottom: 8px; opacity: 0.5; }
+
+  @media (min-width: 768px) {
+    body { padding-bottom: 20px; }
+    .bottomnav {
+      position: sticky;
+      top: 56px;
+      bottom: auto;
+      border-top: none;
+      border-bottom: 1px solid var(--border);
+      padding: 6px;
+      max-width: 820px;
+      margin: 0 auto;
+      border-radius: 14px;
+      margin-top: 10px;
+    }
+    .bn-btn { flex: 0 1 auto; min-width: 90px; padding: 10px 14px; flex-direction: row; gap: 8px; font-size: 0.85em; }
+    .bn-btn .bn-icon { font-size: 1.1em; margin-bottom: 0; }
+    .bn-btn.active::before { display: none; }
+    .bn-btn.active { background: var(--accent-soft); color: var(--accent); }
+    main { padding-top: 0; }
+  }
+
+  /* color-coded tone marks in pinyin */
+  .t-1 { color: var(--t1); }
+  .t-2 { color: var(--t2); }
+  .t-3 { color: var(--t3); }
+  .t-4 { color: var(--t4); }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <div class="brand-logo">哈</div>
+    <div>
+      Mando
+      <small>Taiwan Mandarin · for international students</small>
+    </div>
+  </div>
+  <div class="topbar-actions">
+    <button class="icon-btn" id="theme-toggle" title="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<main>
+
+<!-- ========================= HOME ========================= -->
+<section class="view active" id="view-home">
+  <div class="hero">
+    <h2 class="zh">你好! Welcome to Taiwan · 歡迎來台灣</h2>
+    <p style="margin:4px 0 0;opacity:0.9;font-size:0.82em;font-style:italic;">Nǐ hǎo! Huān yíng lái Táiwān</p>
+    <p style="margin-top:10px;">Everything you need for daily life at CCU — greetings, shopping, food, directions, class vocab — with Taiwan pronunciation on every word.</p>
+  </div>
+
+  <div class="daily-phrase">
+    <div class="tag">📅 Daily phrase</div>
+    <div class="zh-big zh">加油!</div>
+    <div class="pinyin-big"><span class="t-1">jiā</span> <span class="t-2">yóu</span></div>
+    <div class="en-big">"You got this!" — the all-purpose Taiwan encouragement. Hear it everywhere from sports to study rooms.</div>
+    <button class="play-fab" onclick="speak('加油', this)">🔊</button>
+  </div>
+
+  <div class="voice-bar">
+    <label>🎙 Voice · 聲音</label>
+    <select id="voiceSelect"></select>
+    <label style="margin-left:auto;font-size:0.82em;">Speed · 速度
+      <input type="range" id="rate" min="0.5" max="1" step="0.05" value="0.8" style="vertical-align:middle;width:70px;">
+    </label>
+  </div>
+
+  <div class="section-head">
+    <h3>Quick start <span class="zh" style="color:var(--ink-muted);font-weight:600;font-size:0.78em;">快速開始 · kuài sù kāi shǐ</span></h3>
+  </div>
+  <div class="quick-grid">
+    <button class="quick-tile" data-goto="learn" data-cat="greet">
+      <span class="q-icon">👋</span>
+      <div class="q-title">Greetings <span class="zh" style="color:var(--accent);">問候</span></div>
+      <div class="q-sub">wèn hòu · hi / bye / morning</div>
+    </button>
+    <button class="quick-tile" data-goto="learn" data-cat="food">
+      <span class="q-icon">🍜</span>
+      <div class="q-title">Food &amp; drink <span class="zh" style="color:var(--accent);">飲食</span></div>
+      <div class="q-sub">yǐn shí · order like a local</div>
+    </button>
+    <button class="quick-tile" data-goto="learn" data-cat="shop">
+      <span class="q-icon">🛒</span>
+      <div class="q-title">Shopping <span class="zh" style="color:var(--accent);">購物</span></div>
+      <div class="q-sub">gòu wù · 7-11, markets, clothes</div>
+    </button>
+    <button class="quick-tile" data-goto="learn" data-cat="transit">
+      <span class="q-icon">🚆</span>
+      <div class="q-title">Getting around <span class="zh" style="color:var(--accent);">交通</span></div>
+      <div class="q-sub">jiāo tōng · MRT, bus, scooter</div>
+    </button>
+    <button class="quick-tile" data-goto="lessons">
+      <span class="q-icon">📚</span>
+      <div class="q-title">Lessons 3–6 <span class="zh" style="color:var(--accent);">課程</span></div>
+      <div class="q-sub">kè chéng · Prof. Chen's course</div>
+    </button>
+    <button class="quick-tile" data-goto="practice">
+      <span class="q-icon">🎯</span>
+      <div class="q-title">Practice <span class="zh" style="color:var(--accent);">練習</span></div>
+      <div class="q-sub">liàn xí · listen &amp; identify</div>
+    </button>
+  </div>
+
+  <div class="section-head">
+    <h3>Essential phrases <span class="zh" style="color:var(--ink-muted);font-weight:600;font-size:0.78em;">必備句子 · bì bèi jù zi</span></h3>
+    <span class="count">5</span>
+  </div>
+  <div class="phrases" id="essential-list"></div>
+
+  <div class="section-head">
+    <h3>Taiwan slang <span class="zh" style="color:var(--ink-muted);font-weight:600;font-size:0.78em;">台灣用語 · tái wān yòng yǔ</span></h3>
+    <button class="see-all" data-goto="learn" data-cat="slang">See all →</button>
+  </div>
+  <div class="phrases" id="slang-preview"></div>
+</section>
+
+<!-- ========================= LEARN ========================= -->
+<section class="view" id="view-learn">
+  <h2 class="view-title">Learn <span class="zh" style="color:var(--accent);">學習</span> <span style="color:var(--ink-muted);font-size:0.6em;font-style:italic;font-weight:500;">xué xí</span></h2>
+  <p class="view-sub">Browse phrases by what you'll actually do · 瀏覽實用短語 · Tap any card to hear it.</p>
+
+  <div class="cat-scroll" id="cat-scroll"></div>
+
+  <div class="search">
+    <span>🔍</span>
+    <input type="text" id="search-input" placeholder="搜尋 · Search English, pinyin or Chinese...">
+  </div>
+
+  <div class="phrases" id="learn-list"></div>
+</section>
+
+<!-- ========================= LESSONS ========================= -->
+<section class="view" id="view-lessons">
+  <h2 class="view-title">Course lessons <span class="zh" style="color:var(--accent);">課程</span> <span style="color:var(--ink-muted);font-size:0.6em;font-style:italic;font-weight:500;">kè chéng</span></h2>
+  <p class="view-sub">Prof. 陳欣徽's content from Lessons 3–6 · 第三課到第六課 · dì sān kè dào dì liù kè</p>
+
+  <!-- LESSON 3 -->
+  <div class="lesson" data-lesson="3">
+    <div class="lesson-head" onclick="toggleLesson(this)">
+      <div class="lesson-num">3</div>
+      <div>
+        <div class="lesson-title">j · q · x + i/ü finals <span class="zh" style="color:var(--accent);font-size:0.85em;">第三課</span></div>
+        <div class="lesson-sub">dì sān kè · Palatals and the ü → u rule</div>
+      </div>
+      <div class="lesson-chev">▼</div>
+    </div>
+    <div class="lesson-body">
+      <h4>Initials</h4>
+      <div class="phrases">
+        <div class="phrase" data-speak="機"><div class="phrase-body"><div class="phrase-zh zh">j — jī</div><div class="phrase-pinyin">jī (machine)</div><div class="phrase-en">Tongue flat, air flows through — "jee" with no English "j" sound</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="七"><div class="phrase-body"><div class="phrase-zh zh">q — qī</div><div class="phrase-pinyin">qī (seven)</div><div class="phrase-en">Like "ch" in cheese — sharp puff of air</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="西"><div class="phrase-body"><div class="phrase-zh zh">x — xī</div><div class="phrase-pinyin">xī (west)</div><div class="phrase-en">Like "sh" but with your tongue flat</div></div><button class="phrase-play">🔊</button></div>
+      </div>
+
+      <h4>Finals practice</h4>
+      <div class="phrases">
+        <div class="phrase" data-speak="家"><div class="phrase-body"><div class="phrase-zh zh">jiā 家</div><div class="phrase-pinyin"><span class="t-1">jiā</span></div><div class="phrase-en">home / family</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="謝"><div class="phrase-body"><div class="phrase-zh zh">xiè 謝</div><div class="phrase-pinyin"><span class="t-4">xiè</span></div><div class="phrase-en">thanks</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="學"><div class="phrase-body"><div class="phrase-zh zh">xué 學</div><div class="phrase-pinyin"><span class="t-2">xué</span></div><div class="phrase-en">to study</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="去"><div class="phrase-body"><div class="phrase-zh zh">qù 去</div><div class="phrase-pinyin"><span class="t-4">qù</span></div><div class="phrase-en">to go</div></div><button class="phrase-play">🔊</button></div>
+      </div>
+
+      <h4>Spelling rules (test!)</h4>
+      <div style="background:var(--bg-elev);padding:12px 14px;border-radius:10px;font-size:0.9em;margin:8px 0;">
+        <strong style="color:var(--accent);">Rule 1:</strong> standalone <strong>i</strong> → written as <strong>yi</strong>; <strong>u</strong> → <strong>wu</strong>; <strong>ü</strong> → <strong>yu</strong><br>
+        <strong style="color:var(--accent);">Rule 2:</strong> after <strong>j q x</strong>, the dots on ü disappear — <code>ju, qu, xu</code> (still sound like ü!)<br>
+        <strong style="color:var(--accent);">Rule 3:</strong> after <strong>n l</strong>, keep the dots — <code>nǚ, lǜ</code>
+      </div>
+
+      <h4>Practical sentences</h4>
+      <div class="phrases">
+        <div class="phrase" data-speak="今天我們學習第三課"><div class="phrase-body"><div class="phrase-zh zh">今天我們學習第三課</div><div class="phrase-pinyin">Jīntiān wǒmen xuéxí dì sān kè</div><div class="phrase-en">We study Lesson 3 today.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="請喝咖啡"><div class="phrase-body"><div class="phrase-zh zh">請喝咖啡</div><div class="phrase-pinyin">Qǐng hē kāfēi</div><div class="phrase-en">Please drink some coffee.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="今天星期五"><div class="phrase-body"><div class="phrase-zh zh">今天星期五</div><div class="phrase-pinyin">Jīntiān xīngqí wǔ</div><div class="phrase-en">Today is Friday.</div></div><button class="phrase-play">🔊</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LESSON 4 -->
+  <div class="lesson" data-lesson="4">
+    <div class="lesson-head" onclick="toggleLesson(this)">
+      <div class="lesson-num">4</div>
+      <div>
+        <div class="lesson-title">z · c · s + dividing mark <span class="zh" style="color:var(--accent);font-size:0.85em;">第四課</span></div>
+        <div class="lesson-sub">dì sì kè · Dental consonants; the apostrophe rule</div>
+      </div>
+      <div class="lesson-chev">▼</div>
+    </div>
+    <div class="lesson-body">
+      <h4>Initials — z · c · s</h4>
+      <div class="phrases">
+        <div class="phrase" data-speak="字"><div class="phrase-body"><div class="phrase-zh zh">z — zì</div><div class="phrase-pinyin">zì (character)</div><div class="phrase-en">Like "dz" — no air</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="詞"><div class="phrase-body"><div class="phrase-zh zh">c — cí</div><div class="phrase-pinyin">cí (word)</div><div class="phrase-en">Like "ts" — strong puff of air</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="四"><div class="phrase-body"><div class="phrase-zh zh">s — sì</div><div class="phrase-pinyin">sì (four)</div><div class="phrase-en">Like English "s"</div></div><button class="phrase-play">🔊</button></div>
+      </div>
+
+      <h4>Dividing mark (')</h4>
+      <div style="background:var(--bg-elev);padding:12px 14px;border-radius:10px;font-size:0.9em;margin:8px 0;">
+        When a syllable starting with <strong>a / o / e</strong> follows another syllable, add <strong>'</strong> to split them clearly:<br>
+        <code style="color:var(--accent);">xīngqí'èr</code> (Tuesday) — not xīngqíèr<br>
+        <code style="color:var(--accent);">Xī'ān</code> (the city) — not Xian<br>
+        <code style="color:var(--accent);">kù'ài</code> (fond of) — not kuài
+      </div>
+
+      <h4>Practical sentences</h4>
+      <div class="phrases">
+        <div class="phrase" data-speak="現在下課"><div class="phrase-body"><div class="phrase-zh zh">現在下課</div><div class="phrase-pinyin">Xiànzài xiàkè</div><div class="phrase-en">Class is over now.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="老師明天見"><div class="phrase-body"><div class="phrase-zh zh">老師,明天見</div><div class="phrase-pinyin">Lǎoshī, míngtiān jiàn</div><div class="phrase-en">See you tomorrow, teacher.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="你今天中餐想吃什麼"><div class="phrase-body"><div class="phrase-zh zh">你今天中餐想吃什麼?</div><div class="phrase-pinyin">Nǐ jīntiān zhōngcān xiǎng chī shénme?</div><div class="phrase-en">What do you want for lunch today?</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="我想吃麵"><div class="phrase-body"><div class="phrase-zh zh">我想吃麵</div><div class="phrase-pinyin">Wǒ xiǎng chī miàn</div><div class="phrase-en">I want to eat noodles.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="那我們去學生餐廳吧"><div class="phrase-body"><div class="phrase-zh zh">那我們去學生餐廳吧</div><div class="phrase-pinyin">Nà wǒmen qù xuéshēng cāntīng ba</div><div class="phrase-en">Then let's go to the student cafeteria.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="沒問題走吧"><div class="phrase-body"><div class="phrase-zh zh">沒問題,走吧!</div><div class="phrase-pinyin">Méi wèntí, zǒu ba!</div><div class="phrase-en">No problem, let's go!</div></div><button class="phrase-play">🔊</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LESSON 5 -->
+  <div class="lesson" data-lesson="5">
+    <div class="lesson-head" onclick="toggleLesson(this)">
+      <div class="lesson-num">5</div>
+      <div>
+        <div class="lesson-title">zh · ch · sh · r + 不 tone change <span class="zh" style="color:var(--accent);font-size:0.85em;">第五課</span></div>
+        <div class="lesson-sub">dì wǔ kè · Retroflex consonants; bù → bú rule</div>
+      </div>
+      <div class="lesson-chev">▼</div>
+    </div>
+    <div class="lesson-body">
+      <h4>Retroflex initials</h4>
+      <div class="phrases">
+        <div class="phrase" data-speak="知"><div class="phrase-body"><div class="phrase-zh zh">zh — zhī</div><div class="phrase-pinyin">zhī (to know)</div><div class="phrase-en">Tongue curled back — "j" with retroflex</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="吃"><div class="phrase-body"><div class="phrase-zh zh">ch — chī</div><div class="phrase-pinyin">chī (to eat)</div><div class="phrase-en">Tongue curled back — "ch" with air</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="是"><div class="phrase-body"><div class="phrase-zh zh">sh — shì</div><div class="phrase-pinyin">shì (to be)</div><div class="phrase-en">Tongue curled back — "sh"</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="日"><div class="phrase-body"><div class="phrase-zh zh">r — rì</div><div class="phrase-pinyin">rì (day/sun)</div><div class="phrase-en">Like "r" in American "red", tongue curled</div></div><button class="phrase-play">🔊</button></div>
+      </div>
+
+      <h4>The 不 (bù) rule — tested often!</h4>
+      <div style="background:var(--bg-elev);padding:12px 14px;border-radius:10px;font-size:0.9em;margin:8px 0;">
+        <strong style="color:var(--accent);">bù</strong> (not) stays as <strong>bù</strong> (4th tone) before T1, T2, T3:<br>
+        <code>bù chī</code> (don't eat), <code>bù néng</code> (can't), <code>bù hǎo</code> (not good)<br><br>
+        <strong style="color:var(--accent);">bù → bú</strong> (2nd tone) when followed by a 4th-tone word:<br>
+        <code>bú shì</code> (is not), <code>bú kèqi</code> (you're welcome), <code>bú yào</code> (don't want)
+      </div>
+
+      <h4>Bubble tea dialogue (real-world!)</h4>
+      <div class="phrases">
+        <div class="phrase" data-speak="請問珍奶多少錢"><div class="phrase-body"><div class="phrase-zh zh">請問珍奶多少錢?</div><div class="phrase-pinyin">Qǐngwèn zhēnnǎi duōshǎo qián?</div><div class="phrase-en">Excuse me, how much is boba tea?</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="大杯七十元中杯五十元"><div class="phrase-body"><div class="phrase-zh zh">大杯70元,中杯50元</div><div class="phrase-pinyin">Dà bēi 70 yuán, zhōng bēi 50 yuán</div><div class="phrase-en">Large 70 NT, medium 50 NT.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="我要大杯"><div class="phrase-body"><div class="phrase-zh zh">我要大杯</div><div class="phrase-pinyin">Wǒ yào dà bēi</div><div class="phrase-en">I'll take the large one.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="甜度冰塊"><div class="phrase-body"><div class="phrase-zh zh">甜度、冰塊?</div><div class="phrase-pinyin">Tiándù, bīngkuài?</div><div class="phrase-en">Sweetness level and ice?</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="半糖去冰謝謝"><div class="phrase-body"><div class="phrase-zh zh">半糖、去冰,謝謝</div><div class="phrase-pinyin">Bàntáng, qù bīng, xièxie</div><div class="phrase-en">Half sugar, no ice, thank you.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="請稍等一下"><div class="phrase-body"><div class="phrase-zh zh">請稍等一下</div><div class="phrase-pinyin">Qǐng shāo děng yíxià</div><div class="phrase-en">Please wait a moment.</div></div><button class="phrase-play">🔊</button></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LESSON 6 -->
+  <div class="lesson" data-lesson="6">
+    <div class="lesson-head" onclick="toggleLesson(this)">
+      <div class="lesson-num">6</div>
+      <div>
+        <div class="lesson-title">Word stress + 一 (yī) tone change <span class="zh" style="color:var(--accent);font-size:0.85em;">第六課</span></div>
+        <div class="lesson-sub">dì liù kè · Natural rhythm; the yī sandhi rule</div>
+      </div>
+      <div class="lesson-chev">▼</div>
+    </div>
+    <div class="lesson-body">
+      <h4>Word stress tips</h4>
+      <div style="background:var(--bg-elev);padding:12px 14px;border-radius:10px;font-size:0.9em;margin:8px 0;">
+        🎵 <strong>Tone length order:</strong> T2 &gt; T1 &gt; T4 &gt; T3<br>
+        🎵 <strong>Two-syllable words</strong> — the first syllable is usually stressed:<br>
+        <code>hóng</code>chá, <code>xué</code>xiào, <code>diàn</code>nǎo, <code>míng</code>tiān<br>
+        🎵 <strong>Neutral-tone 2nd syllable</strong> — 1st is strong and long:<br>
+        <code>māma</code>, <code>bàba</code>, <code>jiějie</code>, <code>dìdi</code>
+      </div>
+
+      <h4>The 一 (yī) rule</h4>
+      <div style="background:var(--bg-elev);padding:12px 14px;border-radius:10px;font-size:0.9em;margin:8px 0;">
+        <strong style="color:var(--accent);">Stays yī (T1)</strong> standing alone or at end: <code>shíyī</code> (11), <code>dì yī</code> (first)<br><br>
+        <strong style="color:var(--accent);">Changes to yì (T4)</strong> before T1/T2/T3:<br>
+        <code>yì tiān</code> (one day), <code>yì nián</code> (one year), <code>yì diǎn</code> (a little)<br><br>
+        <strong style="color:var(--accent);">Changes to yí (T2)</strong> before T4:<br>
+        <code>yí piàn</code> (a piece), <code>yídìng</code> (definitely), <code>yí cì</code> (once)
+      </div>
+
+      <h4>Self-introduction model text</h4>
+      <div class="phrases">
+        <div class="phrase" data-speak="大家好!我叫山田秀一我是日本人今年二十一歲"><div class="phrase-body"><div class="phrase-zh zh">大家好!我叫山田秀一,我是日本人,今年21歲。</div><div class="phrase-pinyin">Dàjiā hǎo! Wǒ jiào Shāntián Xiūyī, wǒ shì Rìběn rén, jīnnián 21 suì.</div><div class="phrase-en">Hello everyone! My name is Shantian Xiuyi, I'm Japanese, 21 years old.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="我現在在國立中正大學念書"><div class="phrase-body"><div class="phrase-zh zh">我現在在國立中正大學念書</div><div class="phrase-pinyin">Wǒ xiànzài zài Guólì Zhōngzhèng Dàxué niànshū</div><div class="phrase-en">I'm currently studying at National Chung Cheng University.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="我很喜歡雞肉飯"><div class="phrase-body"><div class="phrase-zh zh">我很喜歡雞肉飯</div><div class="phrase-pinyin">Wǒ hěn xǐhuān jīròufàn</div><div class="phrase-en">I really like chicken rice.</div></div><button class="phrase-play">🔊</button></div>
+        <div class="phrase" data-speak="也喜歡雞排和珍珠奶茶"><div class="phrase-body"><div class="phrase-zh zh">也喜歡雞排和珍珠奶茶</div><div class="phrase-pinyin">Yě xǐhuān jīpái hé zhēnzhū nǎichá</div><div class="phrase-en">I also like chicken cutlet and bubble tea.</div></div><button class="phrase-play">🔊</button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= REFERENCE ========================= -->
+<section class="view" id="view-ref">
+  <h2 class="view-title">Reference <span class="zh" style="color:var(--accent);">參考</span> <span style="color:var(--ink-muted);font-size:0.6em;font-style:italic;font-weight:500;">cān kǎo</span></h2>
+  <p class="view-sub">Tones · 聲調 shēng diào · pinyin chart · 拼音表 pīn yīn biǎo · tongue twisters · 繞口令 rào kǒu lìng</p>
+
+  <div class="section-head"><h3>🎵 The 4 tones + neutral</h3></div>
+  <div class="tone-wheel">
+    <div class="tone-cell tn1" data-speak="媽"><div class="small">1st · flat</div><div class="big zh">mā 媽</div><div class="small">mother</div></div>
+    <div class="tone-cell tn2" data-speak="麻"><div class="small">2nd · rising</div><div class="big zh">má 麻</div><div class="small">hemp</div></div>
+    <div class="tone-cell tn3" data-speak="馬"><div class="small">3rd · dip</div><div class="big zh">mǎ 馬</div><div class="small">horse</div></div>
+    <div class="tone-cell tn4" data-speak="罵"><div class="small">4th · fall</div><div class="big zh">mà 罵</div><div class="small">scold</div></div>
+    <div class="tone-cell tn5" data-speak="嗎"><div class="small">neutral</div><div class="big zh">ma 嗎</div><div class="small">? marker</div></div>
+  </div>
+
+  <div style="background:var(--bg-elev);padding:14px 16px;border-radius:12px;margin:12px 0;font-size:0.9em;border-left:3px solid var(--gold);">
+    <strong style="color:var(--gold);">Mark placement:</strong> On the main vowel. Priority <strong>a &gt; o &gt; e &gt; i &gt; u &gt; ü</strong>. For <strong>iu</strong> and <strong>ui</strong>, mark the 2nd vowel: <code>liú</code>, <code>huì</code>.
+  </div>
+
+  <div class="section-head"><h3>📊 Pinyin chart</h3></div>
+  <div class="pinyin-chart">
+    <table>
+      <tr><th></th><th>a</th><th>o</th><th>e</th><th>i</th><th>u</th><th>ai</th><th>ao</th><th>ou</th><th>an</th></tr>
+      <tr><td class="row-label">b</td><td data-speak="八">ba</td><td data-speak="波">bo</td><td class="empty">—</td><td data-speak="逼">bi</td><td data-speak="不">bu</td><td data-speak="白">bai</td><td data-speak="包">bao</td><td class="empty">—</td><td data-speak="班">ban</td></tr>
+      <tr><td class="row-label">p</td><td data-speak="趴">pa</td><td data-speak="坡">po</td><td class="empty">—</td><td data-speak="批">pi</td><td data-speak="撲">pu</td><td data-speak="拍">pai</td><td data-speak="抛">pao</td><td data-speak="剖">pou</td><td data-speak="潘">pan</td></tr>
+      <tr><td class="row-label">m</td><td data-speak="媽">ma</td><td data-speak="摸">mo</td><td data-speak="麼">me</td><td data-speak="咪">mi</td><td data-speak="木">mu</td><td data-speak="埋">mai</td><td data-speak="貓">mao</td><td data-speak="哞">mou</td><td data-speak="滿">man</td></tr>
+      <tr><td class="row-label">d</td><td data-speak="搭">da</td><td class="empty">—</td><td data-speak="德">de</td><td data-speak="低">di</td><td data-speak="都">du</td><td data-speak="呆">dai</td><td data-speak="刀">dao</td><td data-speak="都">dou</td><td data-speak="單">dan</td></tr>
+      <tr><td class="row-label">t</td><td data-speak="他">ta</td><td class="empty">—</td><td data-speak="特">te</td><td data-speak="踢">ti</td><td data-speak="凸">tu</td><td data-speak="胎">tai</td><td data-speak="滔">tao</td><td data-speak="偷">tou</td><td data-speak="灘">tan</td></tr>
+      <tr><td class="row-label">n</td><td data-speak="拿">na</td><td class="empty">—</td><td data-speak="呢">ne</td><td data-speak="你">ni</td><td data-speak="奴">nu</td><td data-speak="乃">nai</td><td data-speak="鬧">nao</td><td class="empty">—</td><td data-speak="南">nan</td></tr>
+      <tr><td class="row-label">l</td><td data-speak="拉">la</td><td class="empty">—</td><td data-speak="了">le</td><td data-speak="哩">li</td><td data-speak="嚕">lu</td><td data-speak="來">lai</td><td data-speak="撈">lao</td><td data-speak="摟">lou</td><td data-speak="藍">lan</td></tr>
+      <tr><td class="row-label">g</td><td data-speak="嘎">ga</td><td class="empty">—</td><td data-speak="哥">ge</td><td class="empty">—</td><td data-speak="姑">gu</td><td data-speak="該">gai</td><td data-speak="高">gao</td><td data-speak="勾">gou</td><td data-speak="甘">gan</td></tr>
+      <tr><td class="row-label">k</td><td data-speak="咖">ka</td><td class="empty">—</td><td data-speak="科">ke</td><td class="empty">—</td><td data-speak="哭">ku</td><td data-speak="開">kai</td><td data-speak="靠">kao</td><td data-speak="摳">kou</td><td data-speak="刊">kan</td></tr>
+      <tr><td class="row-label">h</td><td data-speak="哈">ha</td><td class="empty">—</td><td data-speak="喝">he</td><td class="empty">—</td><td data-speak="呼">hu</td><td data-speak="嗨">hai</td><td data-speak="好">hao</td><td data-speak="齁">hou</td><td data-speak="酣">han</td></tr>
+      <tr><td class="row-label">j</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td data-speak="機">ji</td><td data-speak="居">ju</td><td class="empty">—</td><td data-speak="交">jiao</td><td class="empty">—</td><td data-speak="間">jian</td></tr>
+      <tr><td class="row-label">q</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td data-speak="七">qi</td><td data-speak="去">qu</td><td class="empty">—</td><td data-speak="敲">qiao</td><td class="empty">—</td><td data-speak="千">qian</td></tr>
+      <tr><td class="row-label">x</td><td class="empty">—</td><td class="empty">—</td><td class="empty">—</td><td data-speak="西">xi</td><td data-speak="需">xu</td><td class="empty">—</td><td data-speak="小">xiao</td><td class="empty">—</td><td data-speak="先">xian</td></tr>
+      <tr><td class="row-label">z</td><td data-speak="雜">za</td><td class="empty">—</td><td data-speak="則">ze</td><td data-speak="字">zi</td><td data-speak="租">zu</td><td data-speak="栽">zai</td><td data-speak="早">zao</td><td data-speak="走">zou</td><td data-speak="咱">zan</td></tr>
+      <tr><td class="row-label">c</td><td data-speak="擦">ca</td><td class="empty">—</td><td data-speak="冊">ce</td><td data-speak="詞">ci</td><td data-speak="粗">cu</td><td data-speak="猜">cai</td><td data-speak="操">cao</td><td data-speak="湊">cou</td><td data-speak="餐">can</td></tr>
+      <tr><td class="row-label">s</td><td data-speak="撒">sa</td><td class="empty">—</td><td data-speak="色">se</td><td data-speak="四">si</td><td data-speak="蘇">su</td><td data-speak="賽">sai</td><td data-speak="掃">sao</td><td data-speak="搜">sou</td><td data-speak="三">san</td></tr>
+      <tr><td class="row-label">zh</td><td data-speak="渣">zha</td><td class="empty">—</td><td data-speak="遮">zhe</td><td data-speak="之">zhi</td><td data-speak="豬">zhu</td><td data-speak="摘">zhai</td><td data-speak="找">zhao</td><td data-speak="周">zhou</td><td data-speak="站">zhan</td></tr>
+      <tr><td class="row-label">ch</td><td data-speak="叉">cha</td><td class="empty">—</td><td data-speak="車">che</td><td data-speak="吃">chi</td><td data-speak="出">chu</td><td data-speak="拆">chai</td><td data-speak="超">chao</td><td data-speak="抽">chou</td><td data-speak="產">chan</td></tr>
+      <tr><td class="row-label">sh</td><td data-speak="沙">sha</td><td class="empty">—</td><td data-speak="蛇">she</td><td data-speak="是">shi</td><td data-speak="書">shu</td><td data-speak="曬">shai</td><td data-speak="燒">shao</td><td data-speak="收">shou</td><td data-speak="山">shan</td></tr>
+      <tr><td class="row-label">r</td><td class="empty">—</td><td class="empty">—</td><td data-speak="熱">re</td><td data-speak="日">ri</td><td data-speak="入">ru</td><td class="empty">—</td><td data-speak="繞">rao</td><td data-speak="肉">rou</td><td data-speak="然">ran</td></tr>
+    </table>
+  </div>
+
+  <div class="section-head"><h3>👅 Tongue twisters</h3></div>
+  <p style="color:var(--ink-muted);font-size:0.88em;margin:-4px 0 10px;">Classic 繞口令 (ràokǒulìng) — great for mastering specific sound distinctions.</p>
+
+  <div class="twister">
+    <span class="twister-level easy">EASY · s vs sh</span>
+    <div class="twister-zh zh">四是四,十是十,十四是十四,四十是四十</div>
+    <div class="twister-pinyin">Sì shì sì, shí shì shí, shísì shì shísì, sìshí shì sìshí.</div>
+    <div class="twister-en">4 is 4, 10 is 10, 14 is 14, 40 is 40. The classic beginner twister — drills the 四/十 distinction.</div>
+    <div class="twister-actions">
+      <button class="mini-btn primary" onclick="speak('四是四,十是十,十四是十四,四十是四十',this)">🔊 Hear it</button>
+      <button class="mini-btn" onclick="speak('四是四',this)">Just: sì shì sì</button>
+    </div>
+  </div>
+
+  <div class="twister">
+    <span class="twister-level easy">EASY · ma tones</span>
+    <div class="twister-zh zh">媽媽騎馬,馬慢,媽媽罵馬</div>
+    <div class="twister-pinyin">Māma qí mǎ, mǎ màn, māma mà mǎ.</div>
+    <div class="twister-en">Mom rides the horse, the horse is slow, mom scolds the horse. Pure tone drill.</div>
+    <div class="twister-actions">
+      <button class="mini-btn primary" onclick="speak('媽媽騎馬,馬慢,媽媽罵馬',this)">🔊 Hear it</button>
+    </div>
+  </div>
+
+  <div class="twister">
+    <span class="twister-level med">MEDIUM · n vs l</span>
+    <div class="twister-zh zh">牛郎戀劉娘,劉娘念牛郎</div>
+    <div class="twister-pinyin">Niú láng liàn Liú niáng, Liú niáng niàn Niú láng.</div>
+    <div class="twister-en">Niulang loves Lady Liu, Lady Liu misses Niulang. Taiwan-friendly: tests your n/l which many Taiwanese merge.</div>
+    <div class="twister-actions">
+      <button class="mini-btn primary" onclick="speak('牛郎戀劉娘,劉娘念牛郎',this)">🔊 Hear it</button>
+    </div>
+  </div>
+
+  <div class="twister">
+    <span class="twister-level med">MEDIUM · chi/shi</span>
+    <div class="twister-zh zh">吃葡萄不吐葡萄皮,不吃葡萄倒吐葡萄皮</div>
+    <div class="twister-pinyin">Chī pútao bù tǔ pútao pí, bù chī pútao dào tǔ pútao pí.</div>
+    <div class="twister-en">Eating grapes without spitting the skins, not eating grapes but spitting the skins. The most famous Chinese tongue twister.</div>
+    <div class="twister-actions">
+      <button class="mini-btn primary" onclick="speak('吃葡萄不吐葡萄皮,不吃葡萄倒吐葡萄皮',this)">🔊 Hear it</button>
+    </div>
+  </div>
+
+  <div class="twister">
+    <span class="twister-level hard">HARD · sh vs s</span>
+    <div class="twister-zh zh">石獅寺前有四十四個石獅子</div>
+    <div class="twister-pinyin">Shí shī sì qián yǒu sìshísì gè shí shīzi.</div>
+    <div class="twister-en">In front of Stone Lion Temple there are 44 stone lions. Nightmare for Taiwan speakers who flatten retroflex.</div>
+    <div class="twister-actions">
+      <button class="mini-btn primary" onclick="speak('石獅寺前有四十四個石獅子',this)">🔊 Hear it</button>
+    </div>
+  </div>
+
+  <div class="twister">
+    <span class="twister-level hard">HARD · aspiration</span>
+    <div class="twister-zh zh">八百標兵奔北坡,炮兵並排北邊跑</div>
+    <div class="twister-pinyin">Bā bǎi biāo bīng bēn běi pō, pào bīng bìng pái běi biān pǎo.</div>
+    <div class="twister-en">800 soldiers run up the north slope, artillery troops run side-by-side on the north. Pure b/p aspiration test.</div>
+    <div class="twister-actions">
+      <button class="mini-btn primary" onclick="speak('八百標兵奔北坡,炮兵並排北邊跑',this)">🔊 Hear it</button>
+    </div>
+  </div>
+</section>
+
+<!-- ========================= PRACTICE ========================= -->
+<section class="view" id="view-practice">
+  <h2 class="view-title">Practice <span class="zh" style="color:var(--accent);">練習</span> <span style="color:var(--ink-muted);font-size:0.6em;font-style:italic;font-weight:500;">liàn xí</span></h2>
+  <p class="view-sub">Listen and identify · 聽聽看 · tīng tīng kàn · great before quizzes.</p>
+
+  <div class="practice-card">
+    <div class="mode-row">
+      <button class="mode-pill active" data-pmode="greet"><span class="zh">問候</span> · Greetings</button>
+      <button class="mode-pill" data-pmode="food"><span class="zh">飲食</span> · Food</button>
+      <button class="mode-pill" data-pmode="num"><span class="zh">數字</span> · Numbers</button>
+      <button class="mode-pill" data-pmode="shop"><span class="zh">購物</span> · Shopping</button>
+      <button class="mode-pill" data-pmode="transit"><span class="zh">交通</span> · Transit</button>
+    </div>
+    <div class="score-row">
+      <div class="score-pill c">✓ <span id="pr-c">0</span></div>
+      <div class="score-pill w">✗ <span id="pr-w">0</span></div>
+    </div>
+    <button class="big-play-btn" id="pr-play">🔊</button>
+    <div style="color:var(--ink-muted);font-size:0.82em;margin-top:4px;">Tap to play · tap again to replay</div>
+    <div class="choices-grid" id="pr-choices"></div>
+    <div class="feedback-msg" id="pr-feedback"></div>
+    <button class="mini-btn primary" id="pr-next" style="display:none;margin-top:8px;">Next →</button>
+  </div>
+</section>
+
+</main>
+
+<!-- Bottom nav -->
+<nav class="bottomnav">
+  <button class="bn-btn active" data-view="home"><span class="bn-icon">🏠</span>Home<span class="bn-cn zh">首頁</span></button>
+  <button class="bn-btn" data-view="learn"><span class="bn-icon">📖</span>Learn<span class="bn-cn zh">學習</span></button>
+  <button class="bn-btn" data-view="lessons"><span class="bn-icon">🎓</span>Lessons<span class="bn-cn zh">課程</span></button>
+  <button class="bn-btn" data-view="practice"><span class="bn-icon">🎯</span>Practice<span class="bn-cn zh">練習</span></button>
+  <button class="bn-btn" data-view="ref"><span class="bn-icon">📚</span>Reference<span class="bn-cn zh">參考</span></button>
+</nav>
+
+<script>
+// =========== DATA ===========
+const CATEGORIES = [
+  { id: 'greet',   icon: '👋', name: 'Greetings', cn: '問候', py: 'wèn hòu' },
+  { id: 'basic',   icon: '🙏', name: 'Basics', cn: '基本', py: 'jī běn' },
+  { id: 'intro',   icon: '🧑', name: 'Introduce', cn: '自我介紹', py: 'zì wǒ jiè shào' },
+  { id: 'num',     icon: '🔢', name: 'Numbers', cn: '數字', py: 'shù zì' },
+  { id: 'time',    icon: '🕐', name: 'Time &amp; Days', cn: '時間', py: 'shí jiān' },
+  { id: 'food',    icon: '🍜', name: 'Food &amp; Drink', cn: '飲食', py: 'yǐn shí' },
+  { id: 'shop',    icon: '🛒', name: 'Shopping', cn: '購物', py: 'gòu wù' },
+  { id: 'conv7',   icon: '🏪', name: '7-Eleven', cn: '便利商店', py: 'biàn lì shāng diàn' },
+  { id: 'market',  icon: '🥬', name: 'Night Market', cn: '夜市', py: 'yè shì' },
+  { id: 'transit', icon: '🚆', name: 'Transit', cn: '交通', py: 'jiāo tōng' },
+  { id: 'dir',     icon: '📍', name: 'Directions', cn: '方向', py: 'fāng xiàng' },
+  { id: 'dorm',    icon: '🏠', name: 'Dorm &amp; Campus', cn: '宿舍與校園', py: 'sù shè yǔ xiào yuán' },
+  { id: 'weather', icon: '🌤', name: 'Weather', cn: '天氣', py: 'tiān qì' },
+  { id: 'emerg',   icon: '🚑', name: 'Emergency', cn: '緊急', py: 'jǐn jí' },
+  { id: 'slang',   icon: '🔥', name: 'Taiwan Slang', cn: '台灣俚語', py: 'tái wān lǐ yǔ' },
+];
+
+// All phrases: {zh, pinyin, en, cat, tw?, hot?}
+const PHRASES = [
+  // GREETINGS
+  { zh:'你好', pinyin:'nǐ hǎo', en:'Hello (universal)', cat:'greet', hot:true },
+  { zh:'您好', pinyin:'nín hǎo', en:'Hello (polite — teachers, elders)', cat:'greet' },
+  { zh:'哈囉', pinyin:'hā luō', en:'Hi (casual)', cat:'greet', tw:true },
+  { zh:'早安', pinyin:'zǎo ān', en:'Good morning', cat:'greet' },
+  { zh:'早', pinyin:'zǎo', en:'Morning! (short form)', cat:'greet' },
+  { zh:'午安', pinyin:'wǔ ān', en:'Good afternoon', cat:'greet' },
+  { zh:'晚安', pinyin:'wǎn ān', en:'Good evening / Goodnight', cat:'greet' },
+  { zh:'再見', pinyin:'zài jiàn', en:'Goodbye', cat:'greet' },
+  { zh:'掰掰', pinyin:'bāi bāi', en:'Bye-bye (very common)', cat:'greet', tw:true, hot:true },
+  { zh:'好久不見', pinyin:'hǎo jiǔ bú jiàn', en:'Long time no see', cat:'greet' },
+  { zh:'你吃飯了嗎?', pinyin:'nǐ chī fàn le ma?', en:'Have you eaten? (Taiwan "how are you")', cat:'greet', tw:true },
+  { zh:'最近好嗎?', pinyin:'zuìjìn hǎo ma?', en:'How\'ve you been lately?', cat:'greet' },
+  { zh:'很高興見到你', pinyin:'hěn gāo xìng jiàn dào nǐ', en:'Nice to see you', cat:'greet' },
+
+  // BASICS
+  { zh:'謝謝', pinyin:'xiè xie', en:'Thank you', cat:'basic', hot:true },
+  { zh:'非常感謝', pinyin:'fēi cháng gǎn xiè', en:'Thank you so much', cat:'basic' },
+  { zh:'不客氣', pinyin:'bú kè qì', en:'You\'re welcome', cat:'basic' },
+  { zh:'對不起', pinyin:'duì bù qǐ', en:'Sorry (sincere)', cat:'basic' },
+  { zh:'不好意思', pinyin:'bù hǎo yì si', en:'Excuse me / sorry (light)', cat:'basic', tw:true, hot:true },
+  { zh:'沒關係', pinyin:'méi guān xi', en:'It\'s OK / no worries', cat:'basic' },
+  { zh:'請', pinyin:'qǐng', en:'Please', cat:'basic' },
+  { zh:'是', pinyin:'shì', en:'Yes / is', cat:'basic' },
+  { zh:'不是', pinyin:'bú shì', en:'No / is not', cat:'basic' },
+  { zh:'對', pinyin:'duì', en:'Correct / right', cat:'basic' },
+  { zh:'不對', pinyin:'bú duì', en:'Not right / incorrect', cat:'basic' },
+  { zh:'好', pinyin:'hǎo', en:'Good / OK', cat:'basic' },
+  { zh:'好的', pinyin:'hǎo de', en:'OK / alright', cat:'basic' },
+  { zh:'我不知道', pinyin:'wǒ bù zhī dào', en:'I don\'t know', cat:'basic' },
+  { zh:'我不懂', pinyin:'wǒ bù dǒng', en:'I don\'t understand', cat:'basic' },
+  { zh:'請再說一次', pinyin:'qǐng zài shuō yí cì', en:'Please say it again', cat:'basic' },
+  { zh:'請說慢一點', pinyin:'qǐng shuō màn yì diǎn', en:'Please speak slower', cat:'basic' },
+  { zh:'你會說英文嗎?', pinyin:'nǐ huì shuō yīng wén ma?', en:'Do you speak English?', cat:'basic' },
+
+  // INTRODUCE
+  { zh:'我叫 ___', pinyin:'wǒ jiào ___', en:'My name is ___', cat:'intro', hot:true },
+  { zh:'你叫什麼名字?', pinyin:'nǐ jiào shén me míng zi?', en:'What\'s your name?', cat:'intro' },
+  { zh:'我是印度人', pinyin:'wǒ shì yìn dù rén', en:'I\'m Indian', cat:'intro' },
+  { zh:'我來自印度', pinyin:'wǒ lái zì yìn dù', en:'I\'m from India', cat:'intro' },
+  { zh:'你是哪國人?', pinyin:'nǐ shì nǎ guó rén?', en:'Which country are you from?', cat:'intro' },
+  { zh:'我是學生', pinyin:'wǒ shì xué shēng', en:'I am a student', cat:'intro' },
+  { zh:'我是交換學生', pinyin:'wǒ shì jiāo huàn xué shēng', en:'I am an exchange student', cat:'intro', tw:true },
+  { zh:'我在中正大學念書', pinyin:'wǒ zài zhōng zhèng dà xué niàn shū', en:'I study at CCU', cat:'intro', tw:true },
+  { zh:'我今年21歲', pinyin:'wǒ jīn nián èr shí yī suì', en:'I am 21 years old', cat:'intro' },
+  { zh:'你今年幾歲?', pinyin:'nǐ jīn nián jǐ suì?', en:'How old are you?', cat:'intro' },
+  { zh:'很高興認識你', pinyin:'hěn gāo xìng rèn shi nǐ', en:'Nice to meet you', cat:'intro' },
+  { zh:'我的中文不好', pinyin:'wǒ de zhōng wén bù hǎo', en:'My Chinese isn\'t good', cat:'intro' },
+  { zh:'我在學中文', pinyin:'wǒ zài xué zhōng wén', en:'I\'m learning Chinese', cat:'intro' },
+
+  // NUMBERS
+  { zh:'零', pinyin:'líng', en:'0', cat:'num' },
+  { zh:'一', pinyin:'yī', en:'1', cat:'num' },
+  { zh:'二', pinyin:'èr', en:'2', cat:'num' },
+  { zh:'三', pinyin:'sān', en:'3', cat:'num' },
+  { zh:'四', pinyin:'sì', en:'4', cat:'num' },
+  { zh:'五', pinyin:'wǔ', en:'5', cat:'num' },
+  { zh:'六', pinyin:'liù', en:'6', cat:'num' },
+  { zh:'七', pinyin:'qī', en:'7', cat:'num' },
+  { zh:'八', pinyin:'bā', en:'8', cat:'num' },
+  { zh:'九', pinyin:'jiǔ', en:'9', cat:'num' },
+  { zh:'十', pinyin:'shí', en:'10', cat:'num' },
+  { zh:'二十', pinyin:'èr shí', en:'20', cat:'num' },
+  { zh:'一百', pinyin:'yì bǎi', en:'100', cat:'num' },
+  { zh:'一千', pinyin:'yì qiān', en:'1,000', cat:'num' },
+  { zh:'一萬', pinyin:'yí wàn', en:'10,000', cat:'num' },
+  { zh:'兩個', pinyin:'liǎng gè', en:'two (of something)', cat:'num' },
+  { zh:'多少?', pinyin:'duō shǎo?', en:'How many/much?', cat:'num' },
+  { zh:'幾個?', pinyin:'jǐ gè?', en:'How many? (small count)', cat:'num' },
+
+  // TIME
+  { zh:'今天', pinyin:'jīn tiān', en:'Today', cat:'time' },
+  { zh:'明天', pinyin:'míng tiān', en:'Tomorrow', cat:'time' },
+  { zh:'昨天', pinyin:'zuó tiān', en:'Yesterday', cat:'time' },
+  { zh:'現在', pinyin:'xiàn zài', en:'Now', cat:'time' },
+  { zh:'待會兒', pinyin:'dāi huǐ ér', en:'In a bit / later', cat:'time' },
+  { zh:'星期一', pinyin:'xīng qí yī', en:'Monday', cat:'time' },
+  { zh:'星期二', pinyin:'xīng qí èr', en:'Tuesday', cat:'time' },
+  { zh:'星期三', pinyin:'xīng qí sān', en:'Wednesday', cat:'time' },
+  { zh:'星期四', pinyin:'xīng qí sì', en:'Thursday', cat:'time' },
+  { zh:'星期五', pinyin:'xīng qí wǔ', en:'Friday', cat:'time' },
+  { zh:'星期六', pinyin:'xīng qí liù', en:'Saturday', cat:'time' },
+  { zh:'星期日', pinyin:'xīng qí rì', en:'Sunday', cat:'time' },
+  { zh:'週末', pinyin:'zhōu mò', en:'Weekend', cat:'time' },
+  { zh:'幾點了?', pinyin:'jǐ diǎn le?', en:'What time is it?', cat:'time' },
+  { zh:'三點半', pinyin:'sān diǎn bàn', en:'3:30', cat:'time' },
+  { zh:'早上', pinyin:'zǎo shàng', en:'Morning', cat:'time' },
+  { zh:'中午', pinyin:'zhōng wǔ', en:'Noon', cat:'time' },
+  { zh:'下午', pinyin:'xià wǔ', en:'Afternoon', cat:'time' },
+  { zh:'晚上', pinyin:'wǎn shàng', en:'Evening', cat:'time' },
+
+  // FOOD
+  { zh:'我要這個', pinyin:'wǒ yào zhè ge', en:'I want this one (+ point)', cat:'food', hot:true },
+  { zh:'我吃素', pinyin:'wǒ chī sù', en:'I\'m vegetarian', cat:'food', hot:true },
+  { zh:'不要辣', pinyin:'bú yào là', en:'No spicy', cat:'food' },
+  { zh:'不要香菜', pinyin:'bú yào xiāng cài', en:'No cilantro', cat:'food' },
+  { zh:'多少錢?', pinyin:'duō shǎo qián?', en:'How much?', cat:'food' },
+  { zh:'內用', pinyin:'nèi yòng', en:'Dine in', cat:'food', tw:true },
+  { zh:'外帶', pinyin:'wài dài', en:'Take out', cat:'food', tw:true },
+  { zh:'好吃', pinyin:'hǎo chī', en:'Delicious (food)', cat:'food' },
+  { zh:'好喝', pinyin:'hǎo hē', en:'Delicious (drink)', cat:'food' },
+  { zh:'水', pinyin:'shuǐ', en:'Water', cat:'food' },
+  { zh:'熱水', pinyin:'rè shuǐ', en:'Hot water', cat:'food' },
+  { zh:'冰水', pinyin:'bīng shuǐ', en:'Ice water', cat:'food' },
+  { zh:'米飯', pinyin:'mǐ fàn', en:'Rice', cat:'food' },
+  { zh:'麵', pinyin:'miàn', en:'Noodles', cat:'food' },
+  { zh:'雞肉', pinyin:'jī ròu', en:'Chicken', cat:'food' },
+  { zh:'豬肉', pinyin:'zhū ròu', en:'Pork', cat:'food' },
+  { zh:'牛肉', pinyin:'niú ròu', en:'Beef', cat:'food' },
+  { zh:'魚', pinyin:'yú', en:'Fish', cat:'food' },
+  { zh:'蛋', pinyin:'dàn', en:'Egg', cat:'food' },
+  { zh:'蔬菜', pinyin:'shū cài', en:'Vegetables', cat:'food' },
+  { zh:'水果', pinyin:'shuǐ guǒ', en:'Fruit', cat:'food' },
+  { zh:'珍珠奶茶', pinyin:'zhēn zhū nǎi chá', en:'Bubble tea', cat:'food', tw:true, hot:true },
+  { zh:'半糖', pinyin:'bàn táng', en:'Half sugar', cat:'food', tw:true },
+  { zh:'少糖', pinyin:'shǎo táng', en:'Less sugar', cat:'food', tw:true },
+  { zh:'無糖', pinyin:'wú táng', en:'No sugar', cat:'food', tw:true },
+  { zh:'去冰', pinyin:'qù bīng', en:'No ice', cat:'food', tw:true },
+  { zh:'少冰', pinyin:'shǎo bīng', en:'Less ice', cat:'food', tw:true },
+  { zh:'正常', pinyin:'zhèng cháng', en:'Normal (sugar/ice)', cat:'food', tw:true },
+  { zh:'便當', pinyin:'biàn dāng', en:'Lunchbox', cat:'food', tw:true, hot:true },
+  { zh:'小籠包', pinyin:'xiǎo lóng bāo', en:'Soup dumplings', cat:'food', tw:true },
+  { zh:'牛肉麵', pinyin:'niú ròu miàn', en:'Beef noodles', cat:'food', tw:true },
+  { zh:'滷肉飯', pinyin:'lǔ ròu fàn', en:'Braised pork rice (iconic)', cat:'food', tw:true },
+  { zh:'雞排', pinyin:'jī pái', en:'Chicken cutlet', cat:'food', tw:true },
+  { zh:'乾杯', pinyin:'gān bēi', en:'Cheers! (bottoms up)', cat:'food' },
+  { zh:'買單', pinyin:'mǎi dān', en:'Check please', cat:'food' },
+
+  // SHOPPING
+  { zh:'這個多少錢?', pinyin:'zhè ge duō shǎo qián?', en:'How much is this?', cat:'shop' },
+  { zh:'太貴了', pinyin:'tài guì le', en:'Too expensive', cat:'shop' },
+  { zh:'便宜一點', pinyin:'pián yí yì diǎn', en:'A bit cheaper (bargain)', cat:'shop' },
+  { zh:'有打折嗎?', pinyin:'yǒu dǎ zhé ma?', en:'Any discount?', cat:'shop' },
+  { zh:'我只是看看', pinyin:'wǒ zhǐ shì kàn kàn', en:'I\'m just looking', cat:'shop' },
+  { zh:'可以試穿嗎?', pinyin:'kě yǐ shì chuān ma?', en:'Can I try it on?', cat:'shop' },
+  { zh:'有大一點的嗎?', pinyin:'yǒu dà yì diǎn de ma?', en:'Do you have a bigger size?', cat:'shop' },
+  { zh:'有小一點的嗎?', pinyin:'yǒu xiǎo yì diǎn de ma?', en:'Do you have a smaller size?', cat:'shop' },
+  { zh:'有別的顏色嗎?', pinyin:'yǒu bié de yán sè ma?', en:'Any other colors?', cat:'shop' },
+  { zh:'可以刷卡嗎?', pinyin:'kě yǐ shuā kǎ ma?', en:'Can I pay by card?', cat:'shop' },
+  { zh:'付現', pinyin:'fù xiàn', en:'Pay cash', cat:'shop' },
+  { zh:'我要買這個', pinyin:'wǒ yào mǎi zhè ge', en:'I\'ll buy this', cat:'shop' },
+
+  // 7-ELEVEN
+  { zh:'要袋子嗎?', pinyin:'yào dài zi ma?', en:'"Want a bag?" (they ask you)', cat:'conv7', hot:true },
+  { zh:'要', pinyin:'yào', en:'Yes (I want)', cat:'conv7' },
+  { zh:'不用', pinyin:'bú yòng', en:'No need / no thanks', cat:'conv7' },
+  { zh:'請給我發票', pinyin:'qǐng gěi wǒ fā piào', en:'Receipt please (lottery!)', cat:'conv7', tw:true, hot:true },
+  { zh:'悠遊卡', pinyin:'yōu yóu kǎ', en:'EasyCard (transit + 7-11 payments)', cat:'conv7', tw:true },
+  { zh:'加值', pinyin:'jiā zhí', en:'Top up (card)', cat:'conv7' },
+  { zh:'幫我加熱', pinyin:'bāng wǒ jiā rè', en:'Please heat it up', cat:'conv7', tw:true },
+  { zh:'吸管', pinyin:'xī guǎn', en:'Straw', cat:'conv7' },
+  { zh:'筷子', pinyin:'kuài zi', en:'Chopsticks', cat:'conv7' },
+  { zh:'茶葉蛋', pinyin:'chá yè dàn', en:'Tea egg (classic 7-11 snack)', cat:'conv7', tw:true },
+  { zh:'關東煮', pinyin:'guān dōng zhǔ', en:'Oden (7-11 hot food)', cat:'conv7', tw:true },
+  { zh:'影印', pinyin:'yǐng yìn', en:'Photocopy', cat:'conv7' },
+
+  // NIGHT MARKET
+  { zh:'老闆', pinyin:'lǎo bǎn', en:'Boss (what you call vendors)', cat:'market', tw:true, hot:true },
+  { zh:'老闆娘', pinyin:'lǎo bǎn niáng', en:'Lady boss', cat:'market', tw:true },
+  { zh:'試吃', pinyin:'shì chī', en:'Taste a sample', cat:'market', tw:true },
+  { zh:'一份', pinyin:'yí fèn', en:'One portion', cat:'market' },
+  { zh:'兩份', pinyin:'liǎng fèn', en:'Two portions', cat:'market' },
+  { zh:'一杯', pinyin:'yì bēi', en:'One cup', cat:'market' },
+  { zh:'一個', pinyin:'yí gè', en:'One piece', cat:'market' },
+  { zh:'辣的', pinyin:'là de', en:'The spicy one', cat:'market' },
+  { zh:'原味', pinyin:'yuán wèi', en:'Original flavor', cat:'market' },
+  { zh:'現做', pinyin:'xiàn zuò', en:'Freshly made', cat:'market' },
+  { zh:'蚵仔煎', pinyin:'ô-á-jiān', en:'Oyster omelette (Taiwanese pronounced)', cat:'market', tw:true },
+  { zh:'臭豆腐', pinyin:'chòu dòu fu', en:'Stinky tofu', cat:'market', tw:true },
+
+  // TRANSIT
+  { zh:'捷運', pinyin:'jié yùn', en:'MRT / metro', cat:'transit', tw:true, hot:true },
+  { zh:'公車', pinyin:'gōng chē', en:'Bus', cat:'transit' },
+  { zh:'火車', pinyin:'huǒ chē', en:'Train', cat:'transit' },
+  { zh:'高鐵', pinyin:'gāo tiě', en:'High Speed Rail (HSR)', cat:'transit', tw:true },
+  { zh:'台鐵', pinyin:'tái tiě', en:'TRA (regular railway)', cat:'transit', tw:true },
+  { zh:'計程車', pinyin:'jì chéng chē', en:'Taxi', cat:'transit', tw:true },
+  { zh:'機車', pinyin:'jī chē', en:'Scooter', cat:'transit', tw:true, hot:true },
+  { zh:'腳踏車', pinyin:'jiǎo tà chē', en:'Bicycle', cat:'transit' },
+  { zh:'請到中正大學', pinyin:'qǐng dào zhōng zhèng dà xué', en:'Please take me to CCU', cat:'transit' },
+  { zh:'到了', pinyin:'dào le', en:'Here we are / arrived', cat:'transit' },
+  { zh:'停這裡', pinyin:'tíng zhè lǐ', en:'Stop here', cat:'transit' },
+  { zh:'我要去 ___', pinyin:'wǒ yào qù ___', en:'I want to go to ___', cat:'transit' },
+  { zh:'車票多少錢?', pinyin:'chē piào duō shǎo qián?', en:'How much is a ticket?', cat:'transit' },
+  { zh:'一張票', pinyin:'yì zhāng piào', en:'One ticket', cat:'transit' },
+  { zh:'下一班', pinyin:'xià yì bān', en:'The next one (bus/train)', cat:'transit' },
+
+  // DIRECTIONS
+  { zh:'請問廁所在哪裡?', pinyin:'qǐng wèn cè suǒ zài nǎ lǐ?', en:'Where\'s the toilet?', cat:'dir', hot:true },
+  { zh:'在哪裡?', pinyin:'zài nǎ lǐ?', en:'Where is it?', cat:'dir' },
+  { zh:'這裡', pinyin:'zhè lǐ', en:'Here', cat:'dir' },
+  { zh:'那裡', pinyin:'nà lǐ', en:'There', cat:'dir' },
+  { zh:'左邊', pinyin:'zuǒ biān', en:'Left side', cat:'dir' },
+  { zh:'右邊', pinyin:'yòu biān', en:'Right side', cat:'dir' },
+  { zh:'前面', pinyin:'qián miàn', en:'In front', cat:'dir' },
+  { zh:'後面', pinyin:'hòu miàn', en:'Behind', cat:'dir' },
+  { zh:'直走', pinyin:'zhí zǒu', en:'Go straight', cat:'dir' },
+  { zh:'左轉', pinyin:'zuǒ zhuǎn', en:'Turn left', cat:'dir' },
+  { zh:'右轉', pinyin:'yòu zhuǎn', en:'Turn right', cat:'dir' },
+  { zh:'過馬路', pinyin:'guò mǎ lù', en:'Cross the street', cat:'dir' },
+  { zh:'很近', pinyin:'hěn jìn', en:'Very close', cat:'dir' },
+  { zh:'很遠', pinyin:'hěn yuǎn', en:'Very far', cat:'dir' },
+  { zh:'可以用Google地圖嗎?', pinyin:'kě yǐ yòng Google dì tú ma?', en:'Can we use Google Maps?', cat:'dir' },
+
+  // DORM & CAMPUS
+  { zh:'宿舍', pinyin:'sù shè', en:'Dormitory', cat:'dorm', tw:true },
+  { zh:'教室', pinyin:'jiào shì', en:'Classroom', cat:'dorm' },
+  { zh:'圖書館', pinyin:'tú shū guǎn', en:'Library', cat:'dorm' },
+  { zh:'學生餐廳', pinyin:'xué shēng cān tīng', en:'Student cafeteria', cat:'dorm', tw:true },
+  { zh:'老師', pinyin:'lǎo shī', en:'Teacher', cat:'dorm' },
+  { zh:'同學', pinyin:'tóng xué', en:'Classmate', cat:'dorm' },
+  { zh:'上課', pinyin:'shàng kè', en:'Have class / class starts', cat:'dorm' },
+  { zh:'下課', pinyin:'xià kè', en:'Class is over', cat:'dorm' },
+  { zh:'作業', pinyin:'zuò yè', en:'Homework', cat:'dorm' },
+  { zh:'考試', pinyin:'kǎo shì', en:'Exam', cat:'dorm' },
+  { zh:'wifi密碼是什麼?', pinyin:'wifi mì mǎ shì shén me?', en:'What\'s the wifi password?', cat:'dorm' },
+  { zh:'可以借我充電器嗎?', pinyin:'kě yǐ jiè wǒ chōng diàn qì ma?', en:'Can I borrow your charger?', cat:'dorm' },
+  { zh:'洗衣機', pinyin:'xǐ yī jī', en:'Washing machine', cat:'dorm' },
+  { zh:'冷氣', pinyin:'lěng qì', en:'Air conditioning', cat:'dorm', tw:true },
+
+  // WEATHER
+  { zh:'今天天氣怎麼樣?', pinyin:'jīn tiān tiān qì zěn me yàng?', en:'How\'s the weather today?', cat:'weather' },
+  { zh:'很熱', pinyin:'hěn rè', en:'Very hot', cat:'weather' },
+  { zh:'很冷', pinyin:'hěn lěng', en:'Very cold', cat:'weather' },
+  { zh:'下雨', pinyin:'xià yǔ', en:'Raining', cat:'weather' },
+  { zh:'颱風', pinyin:'tái fēng', en:'Typhoon', cat:'weather', tw:true, hot:true },
+  { zh:'晴天', pinyin:'qíng tiān', en:'Sunny', cat:'weather' },
+  { zh:'陰天', pinyin:'yīn tiān', en:'Cloudy', cat:'weather' },
+  { zh:'很潮濕', pinyin:'hěn cháo shī', en:'Very humid', cat:'weather', tw:true },
+  { zh:'要帶傘', pinyin:'yào dài sǎn', en:'Bring an umbrella', cat:'weather' },
+
+  // EMERGENCY
+  { zh:'救命!', pinyin:'jiù mìng!', en:'Help! (emergency)', cat:'emerg' },
+  { zh:'請幫我', pinyin:'qǐng bāng wǒ', en:'Please help me', cat:'emerg' },
+  { zh:'我迷路了', pinyin:'wǒ mí lù le', en:'I\'m lost', cat:'emerg' },
+  { zh:'我生病了', pinyin:'wǒ shēng bìng le', en:'I\'m sick', cat:'emerg' },
+  { zh:'我頭痛', pinyin:'wǒ tóu tòng', en:'I have a headache', cat:'emerg' },
+  { zh:'我肚子痛', pinyin:'wǒ dù zi tòng', en:'I have a stomachache', cat:'emerg' },
+  { zh:'醫院', pinyin:'yī yuàn', en:'Hospital', cat:'emerg' },
+  { zh:'藥局', pinyin:'yào jú', en:'Pharmacy', cat:'emerg' },
+  { zh:'警察', pinyin:'jǐng chá', en:'Police', cat:'emerg' },
+  { zh:'打119', pinyin:'dǎ yāo yāo jiǔ', en:'Call 119 (fire/ambulance)', cat:'emerg' },
+  { zh:'打110', pinyin:'dǎ yāo yāo líng', en:'Call 110 (police)', cat:'emerg' },
+  { zh:'我的錢包不見了', pinyin:'wǒ de qián bāo bú jiàn le', en:'My wallet is gone', cat:'emerg' },
+  { zh:'我需要翻譯', pinyin:'wǒ xū yào fān yì', en:'I need a translator', cat:'emerg' },
+
+  // SLANG
+  { zh:'加油', pinyin:'jiā yóu', en:'You got this! / Go for it!', cat:'slang', hot:true },
+  { zh:'真的假的?', pinyin:'zhēn de jiǎ de?', en:'Really?! For real?', cat:'slang' },
+  { zh:'超讚', pinyin:'chāo zàn', en:'Super awesome', cat:'slang', tw:true },
+  { zh:'厲害', pinyin:'lì hài', en:'Impressive / badass', cat:'slang' },
+  { zh:'好可愛', pinyin:'hǎo kě ài', en:'So cute!', cat:'slang' },
+  { zh:'沒問題', pinyin:'méi wèn tí', en:'No problem', cat:'slang' },
+  { zh:'慢慢來', pinyin:'màn màn lái', en:'Take your time', cat:'slang' },
+  { zh:'辛苦了', pinyin:'xīn kǔ le', en:'Thanks for your hard work', cat:'slang' },
+  { zh:'隨便', pinyin:'suí biàn', en:'Whatever / up to you', cat:'slang' },
+  { zh:'剛剛好', pinyin:'gāng gāng hǎo', en:'Just right', cat:'slang', tw:true },
+  { zh:'差不多', pinyin:'chà bu duō', en:'More or less / about the same', cat:'slang' },
+  { zh:'蝦米?!', pinyin:'xiā mǐ?!', en:'"What?!" (very Taiwan)', cat:'slang', tw:true },
+  { zh:'有夠扯', pinyin:'yǒu gòu chě', en:'That\'s ridiculous', cat:'slang', tw:true },
+  { zh:'拍謝', pinyin:'pāi xiè', en:'Sorry (Taiwanese casual)', cat:'slang', tw:true },
+  { zh:'對啊', pinyin:'duì a', en:'Yeah, right (agreement)', cat:'slang', tw:true },
+];
+
+// =========== TTS ===========
+let voices = [], selectedVoice = null;
+function loadVoices() {
+  voices = speechSynthesis.getVoices();
+  const sel = document.getElementById('voiceSelect');
+  if (!sel) return;
+  sel.innerHTML = '';
+  const zh = voices.filter(v => v.lang.toLowerCase().startsWith('zh'));
+  if (!zh.length) {
+    sel.innerHTML = '<option>⚠️ Install a Chinese voice in your device settings</option>';
+    return;
+  }
+  zh.sort((a,b) => {
+    const o = {'zh-tw':0,'zh-hk':1,'zh-cn':2,'zh':3};
+    return (o[a.lang.toLowerCase()]??4) - (o[b.lang.toLowerCase()]??4);
+  });
+  zh.forEach((v, i) => {
+    const opt = document.createElement('option');
+    opt.value = i;
+    const flag = v.lang.toLowerCase().includes('tw')?'🇹🇼 ':v.lang.toLowerCase().includes('cn')?'🇨🇳 ':'';
+    opt.textContent = `${flag}${v.name} (${v.lang})`;
+    sel.appendChild(opt);
+  });
+  selectedVoice = zh[0];
+  sel.onchange = e => selectedVoice = zh[e.target.value];
+}
+loadVoices();
+speechSynthesis.onvoiceschanged = loadVoices;
+
+let playingEl = null;
+function speak(text, triggerEl) {
+  if (!('speechSynthesis' in window)) return;
+  speechSynthesis.cancel();
+  const utter = new SpeechSynthesisUtterance(text);
+  utter.lang = 'zh-TW';
+  const rateEl = document.getElementById('rate');
+  utter.rate = rateEl ? parseFloat(rateEl.value) : 0.8;
+  utter.pitch = 1;
+  if (selectedVoice) utter.voice = selectedVoice;
+
+  if (playingEl) playingEl.classList.remove('playing');
+  if (triggerEl) {
+    const container = triggerEl.closest('.phrase') || triggerEl;
+    container.classList.add('playing');
+    playingEl = container;
+    utter.onend = () => container.classList.remove('playing');
+  }
+  speechSynthesis.speak(utter);
+}
+
+// Delegate clicks on anything with data-speak
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-speak]');
+  if (!el) return;
+  const text = el.getAttribute('data-speak');
+  if (text) speak(text, el);
+});
+
+// Phrase cards: click anywhere on the row plays, and the play button also plays
+document.addEventListener('click', e => {
+  const phr = e.target.closest('.phrase');
+  if (phr && phr.hasAttribute('data-speak')) {
+    speak(phr.getAttribute('data-speak'), phr);
+  }
+});
+
+// =========== NAVIGATION ===========
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
+  document.querySelectorAll('.bn-btn').forEach(b => b.classList.toggle('active', b.dataset.view === id));
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+document.querySelectorAll('.bn-btn').forEach(b => {
+  b.onclick = () => showView(b.dataset.view);
+});
+document.querySelectorAll('[data-goto]').forEach(b => {
+  b.onclick = (e) => {
+    const target = b.dataset.goto;
+    const cat = b.dataset.cat;
+    showView(target);
+    if (cat && target === 'learn') {
+      setTimeout(() => activateCategory(cat), 50);
+    }
+  };
+});
+
+// =========== LESSON ACCORDION ===========
+function toggleLesson(el) {
+  el.parentElement.classList.toggle('open');
+}
+
+// =========== CATEGORY CHIPS & LIST ===========
+function renderCategoryChips() {
+  const scroll = document.getElementById('cat-scroll');
+  scroll.innerHTML = '';
+  CATEGORIES.forEach((c, i) => {
+    const chip = document.createElement('button');
+    chip.className = 'cat-chip' + (i === 0 ? ' active' : '');
+    chip.dataset.cat = c.id;
+    chip.innerHTML = `<span>${c.icon}</span> <span class="zh" style="font-weight:700;">${c.cn}</span> · ${c.name}`;
+    chip.onclick = () => activateCategory(c.id);
+    scroll.appendChild(chip);
+  });
+}
+
+function activateCategory(catId) {
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.toggle('active', c.dataset.cat === catId));
+  renderPhrases(catId, document.getElementById('search-input').value);
+  // scroll chip into view
+  const activeChip = document.querySelector('.cat-chip.active');
+  if (activeChip) activeChip.scrollIntoView({behavior: 'smooth', inline: 'center', block: 'nearest'});
+}
+
+function renderPhrases(catId, search) {
+  const list = document.getElementById('learn-list');
+  const q = (search || '').toLowerCase().trim();
+  const filtered = PHRASES.filter(p => {
+    if (p.cat !== catId) return false;
+    if (!q) return true;
+    return p.zh.toLowerCase().includes(q) || p.pinyin.toLowerCase().includes(q) || p.en.toLowerCase().includes(q);
+  });
+  if (!filtered.length) {
+    list.innerHTML = `<div class="empty-state"><div class="em-icon">🔍</div>Nothing found. Try a different word.</div>`;
+    return;
+  }
+  list.innerHTML = filtered.map(p => phraseHTML(p)).join('');
+}
+
+function phraseHTML(p) {
+  const tags = (p.tw ? '<span class="phrase-tag">TW</span>' : '') + (p.hot ? '<span class="phrase-tag hot">★</span>' : '');
+  return `<div class="phrase" data-speak="${esc(p.zh)}">
+    <div class="phrase-body">
+      <div class="phrase-zh zh">${esc(p.zh)}${tags}</div>
+      <div class="phrase-pinyin">${esc(p.pinyin)}</div>
+      <div class="phrase-en">${esc(p.en)}</div>
+    </div>
+    <button class="phrase-play">🔊</button>
+  </div>`;
+}
+function esc(s) { return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+// Search
+document.getElementById('search-input').addEventListener('input', e => {
+  const active = document.querySelector('.cat-chip.active');
+  renderPhrases(active ? active.dataset.cat : 'greet', e.target.value);
+});
+
+// =========== HOME: essentials & slang preview ===========
+function renderHomeLists() {
+  const essentials = ['你好','謝謝','不好意思','多少錢?','請問廁所在哪裡?'];
+  const esList = document.getElementById('essential-list');
+  esList.innerHTML = essentials.map(zh => {
+    const p = PHRASES.find(x => x.zh === zh) || { zh, pinyin: '', en: '' };
+    return phraseHTML(p);
+  }).join('');
+
+  const slangList = document.getElementById('slang-preview');
+  slangList.innerHTML = PHRASES.filter(p => p.cat === 'slang').slice(0, 4).map(p => phraseHTML(p)).join('');
+}
+
+// =========== PRACTICE ===========
+let prMode = 'greet';
+let prAnswer = null;
+let prStats = {c:0,w:0};
+
+function prPool() {
+  return PHRASES.filter(p => p.cat === prMode);
+}
+function prNext() {
+  document.getElementById('pr-feedback').textContent = '';
+  document.getElementById('pr-feedback').className = 'feedback-msg';
+  document.getElementById('pr-next').style.display = 'none';
+
+  const pool = prPool();
+  if (pool.length < 4) return;
+  prAnswer = pool[Math.floor(Math.random()*pool.length)];
+  const others = pool.filter(p => p !== prAnswer);
+  const choices = [prAnswer];
+  while (choices.length < 4 && others.length) {
+    const idx = Math.floor(Math.random()*others.length);
+    choices.push(others.splice(idx,1)[0]);
+  }
+  choices.sort(() => Math.random() - 0.5);
+
+  const container = document.getElementById('pr-choices');
+  container.innerHTML = '';
+  choices.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'choice-btn zh';
+    btn.textContent = c.zh;
+    btn.onclick = () => prAnswerClicked(btn, c);
+    container.appendChild(btn);
+  });
+
+  speak(prAnswer.zh);
+}
+
+function prAnswerClicked(btn, choice) {
+  document.querySelectorAll('#pr-choices .choice-btn').forEach(c => c.classList.add('disabled'));
+  const fb = document.getElementById('pr-feedback');
+  if (choice === prAnswer) {
+    btn.classList.add('correct');
+    prStats.c++;
+    fb.innerHTML = `✓ Correct! <strong>${prAnswer.pinyin}</strong> — ${prAnswer.en}`;
+    fb.className = 'feedback-msg c';
+  } else {
+    btn.classList.add('wrong');
+    prStats.w++;
+    document.querySelectorAll('#pr-choices .choice-btn').forEach(c => {
+      if (c.textContent === prAnswer.zh) c.classList.add('correct');
+    });
+    fb.innerHTML = `✗ Was <strong>${prAnswer.zh}</strong> (${prAnswer.pinyin}) — ${prAnswer.en}`;
+    fb.className = 'feedback-msg w';
+  }
+  document.getElementById('pr-c').textContent = prStats.c;
+  document.getElementById('pr-w').textContent = prStats.w;
+  document.getElementById('pr-next').style.display = 'inline-block';
+}
+
+document.querySelectorAll('.mode-pill').forEach(p => {
+  p.onclick = () => {
+    document.querySelectorAll('.mode-pill').forEach(x => x.classList.remove('active'));
+    p.classList.add('active');
+    prMode = p.dataset.pmode;
+    prNext();
+  };
+});
+document.getElementById('pr-play').onclick = () => {
+  if (!prAnswer) prNext();
+  else speak(prAnswer.zh, document.getElementById('pr-play'));
+};
+document.getElementById('pr-next').onclick = prNext;
+
+// =========== THEME ===========
+const themeBtn = document.getElementById('theme-toggle');
+themeBtn.onclick = () => {
+  document.documentElement.classList.toggle('light');
+  themeBtn.textContent = document.documentElement.classList.contains('light') ? '☀️' : '🌙';
+};
+
+// =========== INIT ===========
+renderCategoryChips();
+renderPhrases('greet', '');
+renderHomeLists();
+prNext();
+</script>
+</body>
+</html>
